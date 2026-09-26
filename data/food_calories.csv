@@ -1,0 +1,61 @@
+class_name,serving_description,serving_grams,calories,protein_g,carbs_g,fat_g,fiber_g,source
+Chicken_Curry,small (100 g),100,180.0,14.0,6.0,11.0,1.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Chicken_Curry,regular (180 g),180,324.0,25.2,10.8,19.8,1.8,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Chicken_Curry,large (280 g),280,504.0,39.2,16.8,30.8,2.8,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Plain_Omelette,1 egg (60 g),60,92.4,6.6,0.9,7.2,0.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Plain_Omelette,2 eggs (120 g),120,184.8,13.2,1.8,14.4,0.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Plain_Omelette,3 eggs (180 g),180,277.2,19.8,2.7,21.6,0.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Spinach_Paneer,small (100 g),100,180.0,8.0,7.0,13.0,3.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Spinach_Paneer,regular (180 g),180,324.0,14.4,12.6,23.4,5.4,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Spinach_Paneer,large (260 g),260,468.0,20.8,18.2,33.8,7.8,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Appam,1 piece (40 g),40,52.0,1.0,8.8,1.2,0.4,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Appam,2 pieces (80 g),80,104.0,2.0,17.6,2.4,0.8,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Appam,3 pieces (120 g),120,156.0,3.0,26.4,3.6,1.2,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Avial,small (100 g),100,120.0,3.0,10.0,8.0,3.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Avial,regular (150 g),150,180.0,4.5,15.0,12.0,4.5,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Avial,large (220 g),220,264.0,6.6,22.0,17.6,6.6,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Banana_Chips,small handful (20 g),20,104.0,0.4,11.6,6.4,0.6,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Banana_Chips,regular (40 g),40,208.0,0.8,23.2,12.8,1.2,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Banana_Chips,large (70 g),70,364.0,1.4,40.6,22.4,2.1,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Chapati_Roti,1 piece (40 g),40,118.8,3.2,20.0,2.0,3.2,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Chapati_Roti,2 pieces (80 g),80,237.6,6.4,40.0,4.0,6.4,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Chapati_Roti,3 pieces (120 g),120,356.4,9.6,60.0,6.0,9.6,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Chocolate_Cake,small slice (50 g),50,185.0,2.5,25.0,8.5,1.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Chocolate_Cake,regular slice (90 g),90,333.0,4.5,45.0,15.3,1.8,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Chocolate_Cake,large slice (130 g),130,481.0,6.5,65.0,22.1,2.6,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Fruit_Salad,small bowl (100 g),100,60.0,1.0,15.0,0.3,2.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Fruit_Salad,regular bowl (180 g),180,108.0,1.8,27.0,0.5,3.6,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Fruit_Salad,large bowl (260 g),260,156.0,2.6,39.0,0.8,5.2,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Idli,1 piece (35 g),35,39.2,0.9,7.7,0.1,0.3,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Idli,2 pieces (70 g),70,78.4,1.8,15.4,0.2,0.7,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Idli,3 pieces (105 g),105,117.6,2.6,23.1,0.3,1.1,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Kulfi,small stick (40 g),40,88.0,1.6,9.6,4.4,0.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Kulfi,regular stick (60 g),60,132.0,2.4,14.4,6.6,0.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Kulfi,large stick (90 g),90,198.0,3.6,21.6,9.9,0.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Marble_Cake,small slice (50 g),50,175.0,2.5,25.0,7.5,0.5,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Marble_Cake,regular slice (90 g),90,315.0,4.5,45.0,13.5,0.9,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Marble_Cake,large slice (130 g),130,455.0,6.5,65.0,19.5,1.3,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Masala_Dosa,small (100 g),100,168.0,3.5,25.0,6.0,2.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Masala_Dosa,regular (150 g),150,252.0,5.2,37.5,9.0,3.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Masala_Dosa,large (220 g),220,369.6,7.7,55.0,13.2,4.4,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Masala_Vada,1 piece (40 g),40,136.0,4.8,14.0,6.4,2.4,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Masala_Vada,2 pieces (80 g),80,272.0,9.6,28.0,12.8,4.8,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Masala_Vada,3 pieces (120 g),120,408.0,14.4,42.0,19.2,7.2,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Mutton_Biryani,small plate (150 g),150,300.0,13.5,30.0,13.5,1.5,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Mutton_Biryani,regular plate (250 g),250,500.0,22.5,50.0,22.5,2.5,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Mutton_Biryani,large plate (350 g),350,700.0,31.5,70.0,31.5,3.5,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Pancake,1 pancake (50 g),50,115.0,3.0,14.0,5.0,0.5,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Pancake,2 pancakes (100 g),100,230.0,6.0,28.0,10.0,1.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Pancake,3 pancakes (150 g),150,345.0,9.0,42.0,15.0,1.5,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Sambar,small bowl (100 g),100,70.0,4.0,10.0,2.0,3.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Sambar,regular bowl (150 g),150,105.0,6.0,15.0,3.0,4.5,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Sambar,large bowl (220 g),220,154.0,8.8,22.0,4.4,6.6,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Uttapam,small (80 g),80,120.0,3.2,20.8,2.4,1.6,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Uttapam,regular (120 g),120,180.0,4.8,31.2,3.6,2.4,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Uttapam,large (180 g),180,270.0,7.2,46.8,5.4,3.6,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Lemonade,small glass (200 ml),200,80.0,0.0,20.0,0.0,0.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Lemonade,regular glass (300 ml),300,120.0,0.0,30.0,0.0,0.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Lemonade,large glass (400 ml),400,160.0,0.0,40.0,0.0,0.0,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Rice_Puttu,1 piece (60 g),60,90.0,1.8,18.0,1.2,1.2,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Rice_Puttu,2 pieces (120 g),120,180.0,3.6,36.0,2.4,2.4,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values
+Rice_Puttu,3 pieces (180 g),180,270.0,5.4,54.0,3.6,3.6,USDA FoodData Central / IFCT (Indian Food Composition Tables) - approximate reference values

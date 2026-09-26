@@ -1,0 +1,26 @@
+path: /Users/pranavdurai/Desktop/TEMP/RAJESH_KUMAR/dataset/dataset
+train: images/train
+val: images/valid
+
+nc: 20
+names:
+  0: Chicken_Curry
+  1: Plain_Omelette
+  2: Spinach_Paneer
+  3: Appam
+  4: Avial
+  5: Banana_Chips
+  6: Chapati_Roti
+  7: Chocolate_Cake
+  8: Fruit_Salad
+  9: Idli
+  10: Kulfi
+  11: Marble_Cake
+  12: Masala_Dosa
+  13: Masala_Vada
+  14: Mutton_Biryani
+  15: Pancake
+  16: Sambar
+  17: Uttapam
+  18: Lemonade
+  19: Rice_Puttu

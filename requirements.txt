@@ -1,0 +1,11 @@
+# Developed/tested inside the `torch_env` conda environment (Python 3.10, Apple
+# Silicon MPS). Everything below except `ultralytics` was already installed there.
+torch==2.8.0
+torchvision==0.23.0
+ultralytics==8.4.158
+numpy==1.26.4
+pandas==2.3.3
+scikit-learn==1.7.2
+opencv-python==4.11.0.86
+pillow==11.3.0
+joblib==1.5.2

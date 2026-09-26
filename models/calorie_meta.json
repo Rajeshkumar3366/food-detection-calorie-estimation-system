@@ -1,0 +1,86 @@
+{
+  "nutrition_source": "/Users/pranavdurai/Desktop/TEMP/RAJESH_KUMAR/data/food_calories.csv",
+  "training_data_source": "/Users/pranavdurai/Desktop/TEMP/RAJESH_KUMAR/data/calorie_training_data.csv",
+  "fit_summary": {
+    "Appam": {
+      "n_samples": 136,
+      "r2": 1.0
+    },
+    "Avial": {
+      "n_samples": 70,
+      "r2": 1.0
+    },
+    "Banana_Chips": {
+      "n_samples": 554,
+      "r2": 1.0
+    },
+    "Chapati_Roti": {
+      "n_samples": 125,
+      "r2": 1.0
+    },
+    "Chicken_Curry": {
+      "n_samples": 60,
+      "r2": 1.0
+    },
+    "Chocolate_Cake": {
+      "n_samples": 115,
+      "r2": 1.0
+    },
+    "Fruit_Salad": {
+      "n_samples": 99,
+      "r2": 1.0
+    },
+    "Idli": {
+      "n_samples": 398,
+      "r2": 1.0
+    },
+    "Kulfi": {
+      "n_samples": 172,
+      "r2": 1.0
+    },
+    "Lemonade": {
+      "n_samples": 56,
+      "r2": 1.0
+    },
+    "Marble_Cake": {
+      "n_samples": 136,
+      "r2": 1.0
+    },
+    "Masala_Dosa": {
+      "n_samples": 76,
+      "r2": 1.0
+    },
+    "Masala_Vada": {
+      "n_samples": 409,
+      "r2": 1.0
+    },
+    "Mutton_Biryani": {
+      "n_samples": 84,
+      "r2": 1.0
+    },
+    "Pancake": {
+      "n_samples": 103,
+      "r2": 1.0
+    },
+    "Plain_Omelette": {
+      "n_samples": 67,
+      "r2": 1.0
+    },
+    "Rice_Puttu": {
+      "n_samples": 71,
+      "r2": 1.0
+    },
+    "Sambar": {
+      "n_samples": 101,
+      "r2": 1.0
+    },
+    "Spinach_Paneer": {
+      "n_samples": 107,
+      "r2": 1.0
+    },
+    "Uttapam": {
+      "n_samples": 134,
+      "r2": 1.0
+    }
+  }
+}
