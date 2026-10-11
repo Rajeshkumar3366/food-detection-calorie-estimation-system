@@ -2,7 +2,7 @@
 # Cambridge Institute of Technology
 # Food Detection and Calorie Estimation System
 
-"""End-to-end inference: image -> detected food items -> calorie estimate.
+"""End-to-end inference: image -> detected food items -> nutrition estimate.
 
 Usage:
     python src/predict.py --image path/to/photo.jpg
@@ -16,6 +16,8 @@ import joblib
 from ultralytics import YOLO
 
 ROOT = Path(__file__).resolve().parent.parent
+
+NUTRITION_TARGETS = ["calories", "protein_g", "carbs_g", "fat_g", "fiber_g"]
 
 
 def parse_args():
@@ -81,21 +83,29 @@ def merge_overlapping_detections(detections: list, iou_thresh: float) -> list:
     return kept
 
 
-def estimate_calories(calorie_models: dict, class_name: str, area_ratio: float) -> float:
+def estimate_nutrition(calorie_models: dict, class_name: str, area_ratio: float) -> dict:
+    """Estimate calories, protein, carbs, fat, and fiber for one detected box
+    of a given class and area ratio. Returns a dict keyed by NUTRITION_TARGETS."""
     model = calorie_models.get(class_name)
     if model is None:
-        return 0.0
-    # 1) Clip area_ratio to the range observed in training, so a box far
-    # outside it doesn't extrapolate off the end of the line.
+        return {t: 0.0 for t in NUTRITION_TARGETS}
+    # 1) Clip area_ratio to the range observed in training (shared across all
+    # 5 targets), so a box far outside it doesn't extrapolate off the end of
+    # any of the lines.
     clipped_area = min(max(area_ratio, model["area_min"]), model["area_max"])
-    calories = model["coef"] * clipped_area + model["intercept"]
-    # 2) Clip the resulting calories to this class's [smallest, largest]
-    # reference serving. This is the real backstop: some training images are
-    # themselves close-up shots with a large area_ratio, so step 1 alone
-    # still lets the line reach implausible values within that "observed"
-    # range. No single detected item should be estimated above what a
-    # plausible large real-world serving of that dish contains.
-    return min(max(calories, model["calorie_min"]), model["calorie_max"])
+    result = {}
+    for target in NUTRITION_TARGETS:
+        t = model["targets"][target]
+        raw = t["coef"] * clipped_area + t["intercept"]
+        # 2) Clip each target's output to this class's [smallest, largest]
+        # reference serving value. This is the real backstop: some training
+        # images are themselves close-up shots with a large area_ratio, so
+        # step 1 alone still lets the line reach implausible values within
+        # that "observed" range. No single detected item should be estimated
+        # above what a plausible large real-world serving of that dish
+        # actually contains, for any of the 5 targets.
+        result[target] = min(max(raw, t["min"]), t["max"])
+    return result
 
 
 def load_models(weights_path: str, calorie_model_path: str):
@@ -109,10 +119,12 @@ def load_models(weights_path: str, calorie_model_path: str):
 def run_inference(
     detector, calorie_models, image_path: str, conf: float = 0.25, merge_iou: float = 0.2
 ):
-    """Detect food items in one image and score each with its calorie
-    estimate. Returns (items, total_calories, n_merged); each item has
-    class_name, confidence, box, area_ratio, and calories. n_merged is how
-    many raw detections were dropped as overlapping duplicates."""
+    """Detect food items in one image and score each with its nutrition
+    estimate. Returns (items, totals, n_merged); each item has class_name,
+    confidence, box, area_ratio, and one key per NUTRITION_TARGETS (calories,
+    protein_g, carbs_g, fat_g, fiber_g). totals is the same 5 keys summed
+    across items. n_merged is how many raw detections were dropped as
+    overlapping duplicates."""
     results = detector.predict(image_path, conf=conf, verbose=False)
     result = results[0]
     img_h, img_w = result.orig_shape
@@ -136,15 +148,16 @@ def run_inference(
     n_merged = n_raw - len(detections)
 
     items = []
-    total_calories = 0.0
+    totals = {t: 0.0 for t in NUTRITION_TARGETS}
     for det in detections:
         x1, y1, x2, y2 = det["box"]
         area_ratio = ((x2 - x1) * (y2 - y1)) / (img_w * img_h)
-        calories = estimate_calories(calorie_models, det["class_name"], area_ratio)
-        total_calories += calories
-        items.append({**det, "area_ratio": area_ratio, "calories": calories})
+        nutrition = estimate_nutrition(calorie_models, det["class_name"], area_ratio)
+        for t in NUTRITION_TARGETS:
+            totals[t] += nutrition[t]
+        items.append({**det, "area_ratio": area_ratio, **nutrition})
 
-    return items, total_calories, n_merged
+    return items, totals, n_merged
 
 
 def annotate_image(image_path: str, items: list):
@@ -166,7 +179,7 @@ def main():
     args = parse_args()
     detector, calorie_models = load_models(args.weights, args.calorie_model)
 
-    items, total_calories, n_merged = run_inference(
+    items, totals, n_merged = run_inference(
         detector, calorie_models, args.image, conf=args.conf, merge_iou=args.merge_iou
     )
 
@@ -176,9 +189,15 @@ def main():
     for item in items:
         print(
             f"  {item['class_name']:20s} conf={item['confidence']:.2f}  "
-            f"~{item['calories']:.0f} kcal"
+            f"~{item['calories']:.0f} kcal  "
+            f"protein={item['protein_g']:.1f}g  carbs={item['carbs_g']:.1f}g  "
+            f"fat={item['fat_g']:.1f}g  fiber={item['fiber_g']:.1f}g"
         )
-    print(f"\nTotal estimated calories: {total_calories:.0f} kcal\n")
+    print(
+        f"\nTotals: {totals['calories']:.0f} kcal  "
+        f"protein={totals['protein_g']:.1f}g  carbs={totals['carbs_g']:.1f}g  "
+        f"fat={totals['fat_g']:.1f}g  fiber={totals['fiber_g']:.1f}g\n"
+    )
 
     if args.output:
         annotated = annotate_image(args.image, items)

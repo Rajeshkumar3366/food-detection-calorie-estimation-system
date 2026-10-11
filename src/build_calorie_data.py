@@ -2,21 +2,26 @@
 # Cambridge Institute of Technology
 # Food Detection and Calorie Estimation System
 
-"""Synthesize (area_ratio, calories) training pairs per class.
+"""Synthesize (area_ratio, nutrition) training pairs per class.
 
-The object-detection dataset has no ground-truth calorie/portion labels, so we
-calibrate a portion-size -> calories mapping from two things we *do* have:
+The object-detection dataset has no ground-truth nutrition/portion labels, so
+we calibrate a portion-size -> nutrition mapping from two things we *do* have:
 
 1. The actual distribution of detected-box area ratios (box_w * box_h, already
    normalized 0-1 in YOLO label format) per class, from labels/train.
 2. The reference nutrition table (data/food_calories.csv), which gives real
-   calorie values at 3 serving sizes (small/regular/large) per class.
+   calories/protein/carbs/fat/fiber values at 3 serving sizes (small/regular/
+   large) per class.
 
-For each class we anchor the "regular" serving's calories to that class's
+For each class we anchor the "regular" serving's values to that class's
 median observed area_ratio, then scale linearly: an area_ratio twice the
-median implies roughly twice the regular serving's calories, etc. The small
-and large serving rows are blended in as additional calibration anchors so
-the mapping isn't just extrapolated from a single point.
+median implies roughly twice the regular serving's calories, protein, carbs,
+fat, and fiber. The small and large serving rows are blended in as additional
+calibration anchors so the mapping isn't just extrapolated from a single
+point. All five nutrition targets share the same area_ratio axis, since a
+class's small/regular/large servings scale (almost exactly) proportionally
+across every target, not just calories, so one shared anchor position per
+serving row is a very close approximation to five separately-derived ones.
 """
 
 import argparse
@@ -27,6 +32,8 @@ import pandas as pd
 from classes import CLASS_NAMES
 
 ROOT = Path(__file__).resolve().parent.parent
+
+NUTRITION_TARGETS = ["calories", "protein_g", "carbs_g", "fat_g", "fiber_g"]
 
 
 def load_area_ratios(labels_dir: Path) -> pd.DataFrame:
@@ -56,33 +63,31 @@ def build_calorie_samples(boxes: pd.DataFrame, nutrition: pd.DataFrame) -> pd.Da
         median_area = group["area_ratio"].median()
         if median_area <= 0:
             continue
-        calories_per_area = regular["calories"] / median_area
+        rate_per_area = {t: regular[t] / median_area for t in NUTRITION_TARGETS}
 
-        # 1) One synthetic point per real observed box, scaled from the regular anchor.
+        # 1) One synthetic point per real observed box, scaled from the regular
+        # anchor - independently for each of the 5 nutrition targets.
         for area_ratio in group["area_ratio"]:
-            samples.append(
-                {
-                    "class_name": class_name,
-                    "area_ratio": area_ratio,
-                    "calories": area_ratio * calories_per_area,
-                }
-            )
+            row = {"class_name": class_name, "area_ratio": area_ratio}
+            for t in NUTRITION_TARGETS:
+                row[t] = area_ratio * rate_per_area[t]
+            samples.append(row)
 
         # 2) Extra calibration anchors from the small/large serving rows: place
         # them at area ratios scaled proportionally to their calories relative
-        # to the regular serving, so the real multi-serving nutrition data
-        # directly informs the fit (not just the observed area distribution).
+        # to the regular serving (calories is the anchor-position driver; the
+        # other 4 targets scale almost identically across servings, see the
+        # module docstring), so the real multi-serving nutrition data directly
+        # informs the fit for all 5 targets, not just the observed area
+        # distribution.
         for _, serving_row in class_rows.iterrows():
             if serving_row["calories"] == regular["calories"]:
                 continue
             anchor_area = median_area * (serving_row["calories"] / regular["calories"])
-            samples.append(
-                {
-                    "class_name": class_name,
-                    "area_ratio": anchor_area,
-                    "calories": serving_row["calories"],
-                }
-            )
+            row = {"class_name": class_name, "area_ratio": anchor_area}
+            for t in NUTRITION_TARGETS:
+                row[t] = serving_row[t]
+            samples.append(row)
 
     return pd.DataFrame(samples)
 

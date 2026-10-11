@@ -52,10 +52,10 @@ def cv2_to_qpixmap(img_bgr) -> QPixmap:
 
 
 class InferenceWorker(QThread):
-    """Runs detection + calorie scoring off the GUI thread so the window
+    """Runs detection + nutrition scoring off the GUI thread so the window
     doesn't freeze while the model runs."""
 
-    succeeded = pyqtSignal(list, float, int, object)
+    succeeded = pyqtSignal(list, dict, int, object)
     failed = pyqtSignal(str)
 
     def __init__(self, detector, calorie_models, image_path):
@@ -66,11 +66,11 @@ class InferenceWorker(QThread):
 
     def run(self):
         try:
-            items, total_calories, n_merged = run_inference(
+            items, totals, n_merged = run_inference(
                 self.detector, self.calorie_models, self.image_path
             )
             annotated = annotate_image(self.image_path, items)
-            self.succeeded.emit(items, total_calories, n_merged, annotated)
+            self.succeeded.emit(items, totals, n_merged, annotated)
         except Exception as exc:  # surface any failure to the GUI thread
             self.failed.emit(str(exc))
 
@@ -172,15 +172,25 @@ class MainWindow(QMainWindow):
         table_label.setStyleSheet("font-weight: 600;")
         root.addWidget(table_label)
 
-        self.table = QTableWidget(0, 3)
-        self.table.setHorizontalHeaderLabels(["Food Item", "Confidence", "Calories (kcal)"])
+        self.table = QTableWidget(0, 7)
+        self.table.setHorizontalHeaderLabels(
+            [
+                "Food Item",
+                "Confidence",
+                "Calories (kcal)",
+                "Protein (g)",
+                "Carbs (g)",
+                "Fat (g)",
+                "Fiber (g)",
+            ]
+        )
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.table.verticalHeader().setVisible(False)
         self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.setSelectionMode(QTableWidget.NoSelection)
         root.addWidget(self.table, stretch=2)
 
-        # --- total calories readout ---
+        # --- total calories readout (headline) ---
         total_row = QHBoxLayout()
         total_caption = QLabel("Total Estimated Calories:")
         total_caption.setStyleSheet("font-weight: 600;")
@@ -192,6 +202,17 @@ class MainWindow(QMainWindow):
         total_row.addWidget(self.total_value)
         total_row.addStretch(1)
         root.addLayout(total_row)
+
+        # --- total macros readout (secondary line) ---
+        macros_row = QHBoxLayout()
+        macros_caption = QLabel("Total Macros:")
+        macros_caption.setStyleSheet("font-weight: 600; color: #555;")
+        self.macros_value = QLabel("protein -- g · carbs -- g · fat -- g · fiber -- g")
+        self.macros_value.setStyleSheet("color: #555;")
+        macros_row.addWidget(macros_caption)
+        macros_row.addWidget(self.macros_value)
+        macros_row.addStretch(1)
+        root.addLayout(macros_row)
 
         # --- status line ---
         self.status_label = QLabel("Loading models...")
@@ -224,6 +245,7 @@ class MainWindow(QMainWindow):
         self.result_pane.clear("(run inference to see the result)")
         self.table.setRowCount(0)
         self.total_value.setText("-- kcal")
+        self.macros_value.setText("protein -- g · carbs -- g · fat -- g · fiber -- g")
         self.status_label.setText("Image loaded. Click “Run Inference”.")
         self.run_btn.setEnabled(self.detector is not None)
 
@@ -239,7 +261,7 @@ class MainWindow(QMainWindow):
         self.worker.failed.connect(self.on_inference_failed)
         self.worker.start()
 
-    def on_inference_succeeded(self, items, total_calories, n_merged, annotated_bgr):
+    def on_inference_succeeded(self, items, totals, n_merged, annotated_bgr):
         self.result_pane.set_pixmap(cv2_to_qpixmap(annotated_bgr))
 
         self.table.setRowCount(len(items))
@@ -247,8 +269,18 @@ class MainWindow(QMainWindow):
             self.table.setItem(row, 0, QTableWidgetItem(item["class_name"]))
             self.table.setItem(row, 1, QTableWidgetItem(f"{item['confidence']:.2f}"))
             self.table.setItem(row, 2, QTableWidgetItem(f"{item['calories']:.0f}"))
+            self.table.setItem(row, 3, QTableWidgetItem(f"{item['protein_g']:.1f}"))
+            self.table.setItem(row, 4, QTableWidgetItem(f"{item['carbs_g']:.1f}"))
+            self.table.setItem(row, 5, QTableWidgetItem(f"{item['fat_g']:.1f}"))
+            self.table.setItem(row, 6, QTableWidgetItem(f"{item['fiber_g']:.1f}"))
 
-        self.total_value.setText(f"{total_calories:.0f} kcal")
+        self.total_value.setText(f"{totals['calories']:.0f} kcal")
+        self.macros_value.setText(
+            f"protein {totals['protein_g']:.1f} g · "
+            f"carbs {totals['carbs_g']:.1f} g · "
+            f"fat {totals['fat_g']:.1f} g · "
+            f"fiber {totals['fiber_g']:.1f} g"
+        )
 
         if items:
             status = f"Detected {len(items)} item(s)."
